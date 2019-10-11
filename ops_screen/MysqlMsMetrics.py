@@ -13,7 +13,6 @@ def MysqlMsCheck(ip, port, passwd):
     mysql_slave_status={}
     cmd = 'mysql -h '+ip+' -P '+port+' -u'+passwd.split("/")[0]+' -p'+passwd.split("/")[1]+' -e "show slave status\G" |grep -E "Master_Host|Master_Port|Slave_IO_Running|Slave_SQL_Running:|Last_SQL_Errno"'
     mysql_status = os.popen(cmd).read()
-
     if mysql_status != "" and mysql_status.find("Can't connect to MySQL server") == -1:
         for i in mysql_status.split("\n"):
             if i == "":
@@ -21,9 +20,9 @@ def MysqlMsCheck(ip, port, passwd):
             mysql_slave_status[i.split(":")[0].strip()]=i.split(":")[1].strip()
         if mysql_slave_status['Last_SQL_Errno'] != '0' or mysql_slave_status['Slave_IO_Running'] != 'Yes' or mysql_slave_status['Slave_SQL_Running'] != 'Yes' :
             print("S:"+ip, mysql_slave_status)
-            return "promecrd{name='H:"+mysql_slave_status['Master_Host']+"_S:"+ip+"',check='mysql_ms'} 0\n"
+            return 'promecrd{name="H:'+mysql_slave_status['Master_Host']+'_S:'+ip+'",check="mysql_ms"} 0\n'
         else:
-            return "promecrd{name='H:"+mysql_slave_status['Master_Host']+"_S:"+ip+"',check='mysql_ms'} 1\n"
+            return 'promecrd{name="H:'+mysql_slave_status['Master_Host']+'_S:'+ip+'",check="mysql_ms"} 1\n'
     else:
         return ""
 
@@ -44,7 +43,7 @@ def MysqlMsStatus(ip, port, passwd):
 数据抓取，将所有的条目按string类型抓出，使用”\n“分隔组成一个大的字符串。
 '''
 def MysqlMsMetrics():
-    data = open('666.csv')
+    data = open('serverlist.csv')
     f_csv = csv.reader(data)
     s = ""
     for index in f_csv:

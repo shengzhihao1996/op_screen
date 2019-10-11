@@ -24,7 +24,7 @@ def MakeMongoRsResult(jsonStr, item, correct, value):
     for i in [str(i['name']) for i in jsonStr['members']]: 
         c+=i.replace(":"+item,"_")
     correct(jsonStr['set']+": "+str([str(i['name']) for i in jsonStr['members']])+";")
-    return "promecrd{name='"+str(jsonStr['set'])+"_"+c+item+"',check='mongo_rs'} "+value+"\n"
+    return 'promecrd{name="'+str(jsonStr['set'])+'_'+c+item+'",check="mongo_rs"} '+value+'\n'
 
 #rs成员信息查询模块
 def MongoRsCheck(ip, item, correct):
@@ -57,12 +57,11 @@ def MongoRsStatus(ip, port, correct):
     else:
         return ""
 
-
 '''
 数据抓取，将所有的条目按string类型抓出，使用”\n“分隔组成一个大的字符串。
 '''
 def MongoRsMetrics():
-    data = open('666.csv')
+    data = open('serverlist.csv')
     f_csv = csv.reader(data)
     s = ""
     correct=MongoRsData()
